@@ -12,6 +12,14 @@ def diagnosis(row):
 
 
 train_labels['diagnosis'] = train_labels.apply(diagnosis, axis=1)
+print(train_labels.shape)
 train_labels.drop(columns=['MEL', 'NV', 'BCC', 'AKIEC', 'BKL', 'DF', 'VASC'], inplace=True)
-# print(train_labels.head())
-train_labels.to_csv("train_val_2018.csv")
+
+train, val = train_test_split(train_labels, test_size=0.2)
+print(train.groupby('diagnosis').count)
+print(val.groupby('diagnosis').count)
+# print(train)
+# print(test)
+
+train.to_csv('train.csv', index=False)
+val.to_csv('val.csv', index=False)

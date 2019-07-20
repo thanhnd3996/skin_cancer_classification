@@ -25,4 +25,7 @@ def format_dir(train_val_dir, target_dir, name_csv):
 if __name__ == '__main__':
     format_dir(train_val_dir="../ISIC_2018_Training_Input/",
                target_dir="./dataset/",
-               name_csv="train_val_2018.csv")
+               name_csv="train.csv")
+    format_dir(train_val_dir="../ISIC_2018_Training_Input/",
+               target_dir="./dataset/",
+               name_csv="val.csv")
