@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 
 train_labels = pd.read_csv("ISIC2018_Task3_Training_GroundTruth.csv")
 
+
 def diagnosis(row):
     return row[row == 1].index[0]
 
