@@ -4,7 +4,7 @@ import numpy as np
 from imutils import paths
 from keras import Model
 from keras.applications.resnet50 import ResNet50, preprocess_input
-from keras.layers import Flatten
+from keras.layers import GlobalAveragePooling2D
 from keras.preprocessing import image
 
 # parameter and file path
@@ -14,13 +14,12 @@ trained_resnet_weights = "./checkpoint/resnet_50.h5"
 dataset = "./dataset/"
 val_set = "./dataset/val_images/"
 test_set = "./dataset/test_images"
-val_csv = "./data/val.csv"
 
 # create model and load weight
 base_model = ResNet50(include_top=False, weights=None, input_shape=(224, 224, 3))
 last = base_model.output
-x = Flatten()(last)
-model = Model(inputs=base_model.input, outputs=x)
+layer = GlobalAveragePooling2D()(last)
+model = Model(inputs=base_model.input, outputs=layer)
 model.summary()
 model.load_weights(trained_resnet_weights)
 

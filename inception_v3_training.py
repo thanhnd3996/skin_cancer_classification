@@ -5,6 +5,9 @@ from keras.models import Model
 from keras.optimizers import SGD
 from keras.preprocessing import image
 
+# parameter
+batch_size = 8
+epochs = 1000
 # data pre-processing
 train_gen_args = dict(rotation_range=30,
                       width_shift_range=0.2,
@@ -21,10 +24,10 @@ val_datagen = image.ImageDataGenerator(**val_gen_args)
 
 # load image
 train_generator = train_datagen.flow_from_directory("./dataset/train_images/",
-                                                    target_size=(299, 299), batch_size=8)
+                                                    target_size=(299, 299), batch_size=batch_size)
 
 valid_generator = val_datagen.flow_from_directory("./dataset/val_images/",
-                                                  target_size=(299, 299), batch_size=8)
+                                                  target_size=(299, 299), batch_size=batch_size)
 
 # define model architecture
 # load base_model
@@ -42,10 +45,11 @@ sgd = SGD(lr=0.1, clipnorm=5.)
 
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 # Save the model with best weights
-checkpointer = ModelCheckpoint('./checkpoint/inception_v3_1.h5',
+checkpointer = ModelCheckpoint('./checkpoint/inception_v3.h5',
                                verbose=1, save_best_only=True,
+                               save_weights_only=True,
                                monitor='val_acc', mode="max")
 
 # train model
-model.fit_generator(train_generator, steps_per_epoch=8012 // 8, validation_data=valid_generator,
-                    validation_steps=2003 // 8, epochs=150, verbose=1, callbacks=[checkpointer])
+model.fit_generator(train_generator, steps_per_epoch=8012 // batch_size, validation_data=valid_generator,
+                    validation_steps=2003 // batch_size, epochs=epochs, verbose=1, callbacks=[checkpointer])

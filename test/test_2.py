@@ -1,6 +1,6 @@
 import numpy as np
 from keras import Model
-from keras.applications.resnet50 import ResNet50, preprocess_input
+from keras.applications.inception_v3 import InceptionV3, preprocess_input
 from keras.layers import GlobalAveragePooling2D
 from keras.preprocessing import image
 
@@ -9,7 +9,7 @@ num_classes = 7
 labels = ['AKIEC', 'BCC', 'BKL', 'DF', 'MEL', 'NV', 'VASC']
 
 # create model and load weight
-base_model = ResNet50(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
+base_model = InceptionV3(include_top=False, weights='imagenet', input_shape=(299, 299, 3))
 last = base_model.output
 layer = GlobalAveragePooling2D()(last)
 
@@ -22,7 +22,7 @@ y_train = []
 
 img_path = "/home/ndt3996/PycharmProjects/skin_cancer_isic_2018/test/0.0_ISIC_0024331.jpg"
 
-img = image.load_img(img_path, target_size=(224, 224))
+img = image.load_img(img_path, target_size=(299, 299))
 x = image.img_to_array(img)
 x = np.expand_dims(x, axis=0)
 x = preprocess_input(x)
