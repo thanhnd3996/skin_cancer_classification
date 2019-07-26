@@ -4,7 +4,7 @@ import numpy as np
 from imutils import paths
 from keras import Model
 from keras.applications.resnet50 import ResNet50, preprocess_input
-from keras.layers import GlobalAveragePooling2D
+from keras.layers import GlobalAveragePooling2D, Dense, Dropout
 from keras.preprocessing import image
 import xgboost as xgb
 from sklearn.metrics import accuracy_score
@@ -21,6 +21,8 @@ val_set = "./dataset/val_images"
 base_model = ResNet50(include_top=False, weights=None, input_shape=(224, 224, 3))
 last = base_model.output
 layer = GlobalAveragePooling2D()(last)
+layer = Dense(2048, activation='relu')(last)
+layer = Dropout(0.4)(layer)
 model = Model(inputs=base_model.input, outputs=layer)
 model.summary()
 model.load_weights(trained_resnet_weights)
