@@ -20,9 +20,9 @@ val_set = "./dataset/val_images"
 # create model and load weight
 base_model = ResNet50(include_top=False, weights=None, input_shape=(224, 224, 3))
 last = base_model.output
-layer = GlobalAveragePooling2D()(last)
 layer = Dense(2048, activation='relu')(last)
 layer = Dropout(0.4)(layer)
+layer = GlobalAveragePooling2D()(layer)
 model = Model(inputs=base_model.input, outputs=layer)
 model.summary()
 model.load_weights(trained_resnet_weights)
