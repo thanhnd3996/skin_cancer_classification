@@ -48,10 +48,10 @@ def feature_extractor(img_path):
     x_resnet = read_image((224, 224), img_path)
     x_inception = read_image((299, 299), img_path)
 
-    ft_1 = resnet_model.predict(x_resnet)
+    ft_1 = model_1.predict(x_resnet)
     ft_reduce_1 = ft_1.squeeze()
 
-    ft_2 = inception_model.predict(x_inception)
+    ft_2 = model_2.predict(x_inception)
     ft_reduce_2 = ft_2.squeeze()
 
     ft_vector = np.concatenate((ft_reduce_1, ft_reduce_2), axis=0)
@@ -74,13 +74,9 @@ def create_train_data():
     train_lb_encoder = LabelEncoder()
     train_lb_encoder = train_lb_encoder.fit(y_train)
     y_train = train_lb_encoder.transform(y_train)
-    with open('X_train.txt', 'w') as f1:
-        for item in X_train:
-            f1.write("%s\n" % item)
-    with open('y_train.txt', 'w') as f2:
-        for item in y_train:
-            f2.write("%s\n" % item)
-
+    
+    np.save('X_train.npy', X_train)
+    np.save('y_train.npy', y_train)
 
 def create_val_data():
     X_val = []
@@ -97,13 +93,8 @@ def create_val_data():
     val_lb_encoder = LabelEncoder()
     val_lb_encoder = val_lb_encoder.fit(y_val)
     y_val = val_lb_encoder.transform(y_val)
-    with open('X_val.txt', 'w') as f1:
-        for item in X_val:
-            f1.write("%s\n" % item)
-    with open('y_val.txt', 'w') as f2:
-        for item in y_val:
-            f2.write("%s\n" % item)
-    return X_val, y_val
+    np.save('X_val.npy', X_val)
+    np.save('y_val.npy', y_val)
 
 
 if __name__ == '__main__':
