@@ -74,9 +74,10 @@ def create_train_data():
     train_lb_encoder = LabelEncoder()
     train_lb_encoder = train_lb_encoder.fit(y_train)
     y_train = train_lb_encoder.transform(y_train)
-    
+
     np.save('X_train.npy', X_train)
     np.save('y_train.npy', y_train)
+
 
 def create_val_data():
     X_val = []
