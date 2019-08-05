@@ -40,5 +40,5 @@ predictions = clf.predict(select_X_val)
 accuracy = accuracy_score(y_val, predictions)
 cm = confusion_matrix(y_val, predictions)
 cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-cm.diagonal()
+print(cm.diagonal())
 print("New_Accuracy: %.2f%%" % (accuracy * 100))
