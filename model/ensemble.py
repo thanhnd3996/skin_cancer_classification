@@ -22,22 +22,22 @@ clf.fit(X_train, y_train)
 
 predictions = clf.predict(X_val)
 accuracy = accuracy_score(y_val, predictions)
-print("Accuracy: %.2f%%" % (accuracy * 100))
+# print("Accuracy: %.2f%%" % (accuracy * 100))
 
-plot_importance(clf)
+# plot_importance(clf)
+#
+# pyplot.show()
+# thresh = 50
+# thresholds = sort(clf.feature_importances_)
+# selection = SelectFromModel(clf, threshold=thresh, prefit=True)
+# select_X_train = selection.transform(X_train)
+# selection_model = xgb.XGBClassifier(max_depth=15, learning_rate=0.1, n_estimators=200)
+# selection_model.fit(select_X_train, y_train)
+#
+# select_X_val = selection.transform(X_val)
+# predictions = clf.predict(select_X_val)
+# accuracy = accuracy_score(y_val, predictions)
 
-pyplot.show()
-thresh = 50
-thresholds = sort(clf.feature_importances_)
-selection = SelectFromModel(clf, threshold=thresh, prefit=True)
-select_X_train = selection.transform(X_train)
-selection_model = xgb.XGBClassifier(max_depth=15, learning_rate=0.1, n_estimators=200)
-selection_model.fit(select_X_train, y_train)
-
-select_X_val = selection.transform(X_val)
-predictions = clf.predict(select_X_val)
-
-accuracy = accuracy_score(y_val, predictions)
 cm = confusion_matrix(y_val, predictions)
 cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 print(cm.diagonal())
