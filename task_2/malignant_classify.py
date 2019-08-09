@@ -1,8 +1,7 @@
 from keras.applications.inception_v3 import InceptionV3
 from keras.callbacks import ModelCheckpoint
-from keras.layers import Dense, GlobalAveragePooling2D, Conv2D, MaxPooling2D, Dropout, Flatten
+from keras.layers import Dense, GlobalAveragePooling2D
 from keras.models import Model
-from keras import Sequential
 from keras.optimizers import SGD
 from keras.preprocessing import image
 
@@ -33,24 +32,19 @@ valid_generator = val_datagen.flow_from_directory("./dataset_2/val_images/",
 
 # define model architecture
 # load base_model
-benchmark = Sequential()
-benchmark.add(Conv2D(filters=16, kernel_size=2, padding='same', activation='relu', input_shape=(299, 299, 3)))
-benchmark.add(MaxPooling2D(pool_size=2, padding='same'))
-benchmark.add(Conv2D(filters=32, kernel_size=2, padding='same', activation='relu'))
-benchmark.add(MaxPooling2D(pool_size=2, padding='same'))
-benchmark.add(Conv2D(filters=64, kernel_size=2, padding='same', activation='relu'))
-benchmark.add(MaxPooling2D(pool_size=2, padding='same'))
-benchmark.add(Dropout(0.3))
-benchmark.add(Flatten())
-benchmark.add(Dense(512, activation='relu'))
-benchmark.add(Dropout(0.5))
-benchmark.add(Dense(3, activation='softmax'))
-benchmark.summary()
+base_model = InceptionV3(include_top=False, weights=None, input_shape=(299, 299, 3))
+last = base_model.output
+
+x = Dense(2048, activation='relu')(last)
+x = GlobalAveragePooling2D()(x)
+preds = Dense(num_classes, activation='softmax')(x)
+model = Model(input=base_model.input, output=preds)
+model.summary()
 
 # Compile model
 sgd = SGD(lr=0.1, clipnorm=5.)
 
-benchmark.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 # Save the model with best weights
 checkpointer = ModelCheckpoint('../checkpoint/inception_v3_task_2.h5',
                                verbose=1, save_best_only=True,
@@ -58,5 +52,5 @@ checkpointer = ModelCheckpoint('../checkpoint/inception_v3_task_2.h5',
                                monitor='val_acc', mode="max")
 
 # train model
-benchmark.fit_generator(train_generator, steps_per_epoch=8012 // batch_size, validation_data=valid_generator,
-                        validation_steps=2003 // batch_size, epochs=epochs, verbose=1, callbacks=[checkpointer])
+model.fit_generator(train_generator, steps_per_epoch=8012 // batch_size, validation_data=valid_generator,
+                    validation_steps=2003 // batch_size, epochs=epochs, verbose=1, callbacks=[checkpointer])
