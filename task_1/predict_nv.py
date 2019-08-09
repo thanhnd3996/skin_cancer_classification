@@ -38,9 +38,9 @@ def evaluate():
     model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
     score = model.predict_generator(test_generator, steps=nb_samples)
 
-    for i in range(0, nb_samples):
-        idx = np.argmax(score[i])
-        print(idx, score[i][idx])
+    # for i in range(0, nb_samples):
+    #     idx = np.argmax(score[i])
+    #     print(idx, score[i][idx])
 
     y_pred = np.argmax(score, axis=1)
     cm = confusion_matrix(test_generator.classes, y_pred)
