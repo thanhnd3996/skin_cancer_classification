@@ -23,7 +23,8 @@ print("Loading Inception V3")
 inception_model = InceptionV3(include_top=False, weights=None, input_shape=(299, 299, 3))
 inception_last = inception_model.output
 
-inception_fcn = GlobalAveragePooling2D()(inception_last)
+inception_fcn = Dense(2048, activation='relu')(inception_last)
+inception_fcn = GlobalAveragePooling2D()(inception_fcn)
 inception_fcn = Dense(num_classes, activation='softmax')(inception_fcn)
 model_1 = Model(inputs=inception_model.input, outputs=inception_fcn)
 model_1.load_weights(trained_task2_model, by_name=True)
