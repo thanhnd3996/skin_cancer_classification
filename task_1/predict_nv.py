@@ -18,7 +18,7 @@ def evaluate():
     test_generator = test_data_gen.flow_from_directory(
         test_dir,
         target_size=(299, 299),
-        batch_size=8,
+        batch_size=1,
         class_mode="categorical"
     )
     file_names = test_generator.filenames
