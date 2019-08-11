@@ -24,10 +24,10 @@ train_datagen = image.ImageDataGenerator(**train_gen_args)
 val_datagen = image.ImageDataGenerator(**val_gen_args)
 
 # load image
-train_generator = train_datagen.flow_from_directory("./dataset_2/train_images/",
+train_generator = train_datagen.flow_from_directory("../dataset_2/train_images/",
                                                     target_size=(299, 299), batch_size=batch_size)
 
-valid_generator = val_datagen.flow_from_directory("./dataset_2/val_images/",
+valid_generator = val_datagen.flow_from_directory("../dataset_2/val_images/",
                                                   target_size=(299, 299), batch_size=batch_size)
 
 # define model architecture
