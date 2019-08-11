@@ -1,6 +1,6 @@
 from keras.applications.inception_v3 import InceptionV3
 from keras.callbacks import ModelCheckpoint
-from keras.layers import Dense, GlobalAveragePooling2D
+from keras.layers import Dense, GlobalAveragePooling2D, Dropout
 from keras.models import Model
 from keras.optimizers import SGD
 from keras.preprocessing import image
@@ -36,6 +36,7 @@ base_model = InceptionV3(include_top=False, weights=None, input_shape=(299, 299,
 last = base_model.output
 
 x = Dense(2048, activation='relu')(last)
+x = Dropout(0.5)(x)
 x = GlobalAveragePooling2D()(x)
 preds = Dense(num_classes, activation='softmax')(x)
 model = Model(input=base_model.input, output=preds)
@@ -46,7 +47,7 @@ sgd = SGD(lr=0.1, clipnorm=5.)
 
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 # Save the model with best weights
-checkpointer = ModelCheckpoint('../checkpoint/inception_v3_task_2.h5',
+checkpointer = ModelCheckpoint('../checkpoint/inception_v3_task_2_2.h5',
                                verbose=1, save_best_only=True,
                                save_weights_only=True,
                                monitor='val_acc', mode="max")
