@@ -35,7 +35,7 @@ valid_generator = val_datagen.flow_from_directory("../dataset_2/val_images/",
 base_model = InceptionV3(include_top=False, weights=None, input_shape=(299, 299, 3))
 last = base_model.output
 
-x = Dense(2048, activation='relu')(last)
+x = Dense(512, activation='relu')(last)
 x = Dropout(0.5)(x)
 x = GlobalAveragePooling2D()(x)
 preds = Dense(num_classes, activation='softmax')(x)
