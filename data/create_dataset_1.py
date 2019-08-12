@@ -45,5 +45,5 @@ if __name__ == '__main__':
                target_dir="../dataset_1/val_images/",
                name_csv="val.csv")
     format_dir(train_val_dir="../ISIC2018_input/",
-               target_dir="../dataset_1/test_images",
+               target_dir="../dataset_1/test_images/",
                name_csv="test.csv")
