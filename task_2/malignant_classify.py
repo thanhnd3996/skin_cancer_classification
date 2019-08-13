@@ -53,5 +53,5 @@ checkpointer = ModelCheckpoint('../checkpoint/inception_v3_task_2_2.h5',
                                monitor='val_acc', mode="max")
 
 # train model
-model.fit_generator(train_generator, steps_per_epoch=8012 // batch_size, validation_data=valid_generator,
-                    validation_steps=2003 // batch_size, epochs=epochs, verbose=1, callbacks=[checkpointer])
+model.fit_generator(train_generator, steps_per_epoch=2437 // batch_size, validation_data=valid_generator,
+                    validation_steps=514 // batch_size, epochs=epochs, verbose=1, callbacks=[checkpointer])
