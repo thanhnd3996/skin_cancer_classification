@@ -11,10 +11,10 @@ from sklearn.preprocessing import LabelEncoder
 
 # parameter and file path
 num_classes = 3
-trained_task3_model = "../checkpoint/inception_v3_task3.h5"
-train_set = "../dataset_3/train_images/"
-val_set = "../dataset_3/val_images"
-test_set = "../dataset_3/test_images"
+trained_task3_model = "../checkpoint/inception_v3_task4.h5"
+train_set = "../dataset_4/train_images/"
+val_set = "../dataset_4/val_images"
+test_set = "../dataset_4/test_images"
 
 # create model and load weight
 

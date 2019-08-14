@@ -5,7 +5,7 @@ from imutils import paths
 from keras import Model
 from keras.applications.inception_v3 import InceptionV3, preprocess_input
 from keras.applications.resnet50 import preprocess_input
-from keras.layers import GlobalAveragePooling2D
+from keras.layers import GlobalAveragePooling2D, Dense
 from keras.preprocessing import image
 from sklearn.preprocessing import LabelEncoder
 
@@ -23,7 +23,8 @@ print("Loading Inception V3")
 inception_model = InceptionV3(include_top=False, weights=None, input_shape=(299, 299, 3))
 inception_last = inception_model.output
 
-inception_fcn = GlobalAveragePooling2D()(inception_last)
+inception_fcn = Dense(2048, activation='relu')(inception_last)
+inception_fcn = GlobalAveragePooling2D()(inception_fcn)
 model_1 = Model(inputs=inception_model.input, outputs=inception_fcn)
 model_1.load_weights(trained_task2_model, by_name=True)
 
@@ -65,25 +66,25 @@ def create_train_data():
     np.save('y_train.npy', y_train)
 
 
-def create_val_data():
-    X_val = []
-    y_val = []
-    val_paths = sorted(list(paths.list_images(val_set)))
-    for val_path in val_paths:
-        val_ft = feature_extractor(val_path)
-        X_val.append(val_ft)
-        label = val_path.split(os.path.sep)[-2]
-        y_val.append(label)
+def create_test_data():
+    X_test = []
+    y_test = []
+    test_paths = sorted(list(paths.list_images(test_set)))
+    for test_path in test_paths:
+        test_ft = feature_extractor(test_path)
+        X_test.append(test_ft)
+        label = test_path.split(os.path.sep)[-2]
+        y_test.append(label)
 
-    X_val = np.array(X_val)
-    y_val = np.array(y_val)
+    X_test = np.array(X_test)
+    y_test = np.array(y_test)
     val_lb_encoder = LabelEncoder()
-    val_lb_encoder = val_lb_encoder.fit(y_val)
-    y_val = val_lb_encoder.transform(y_val)
-    np.save('X_val.npy', X_val)
-    np.save('y_val.npy', y_val)
+    val_lb_encoder = val_lb_encoder.fit(y_test)
+    y_test = val_lb_encoder.transform(y_test)
+    np.save('X_test.npy', X_test)
+    np.save('y_test.npy', y_test)
 
 
 if __name__ == '__main__':
     create_train_data()
-    create_val_data()
+    create_test_data()

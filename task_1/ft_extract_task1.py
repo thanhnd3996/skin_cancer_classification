@@ -25,7 +25,6 @@ inception_last = inception_model.output
 
 inception_fcn = Dense(2048, activation='relu')(inception_last)
 inception_fcn = GlobalAveragePooling2D()(inception_fcn)
-inception_fcn = Dense(num_classes, activation='softmax')(inception_fcn)
 model_1 = Model(inputs=inception_model.input, outputs=inception_fcn)
 model_1.load_weights(trained_task2_model, by_name=True)
 
@@ -42,50 +41,29 @@ def feature_extractor(img_path):
     x_1 = read_image((299, 299), img_path)
 
     ft_1 = model_1.predict(x_1)
-    # ft_vector = ft_1.squeeze()
+    ft_vector = ft_1.squeeze()
 
-    # return ft_vector
-    return ft_1
+    return ft_vector
 
 
-#
-# def create_train_data():
-#     X_train = []
-#     y_train = []
-#     train_paths = sorted(list(paths.list_images(train_set)))
-#     for train_path in train_paths:
-#         train_ft = feature_extractor(train_path)
-#         X_train.append(train_ft)
-#         label = train_path.split(os.path.sep)[-2]
-#         y_train.append(label)
-#
-#     X_train = np.array(X_train)
-#     y_train = np.array(y_train, np)
-#     train_lb_encoder = LabelEncoder()
-#     train_lb_encoder = train_lb_encoder.fit(y_train)
-#     y_train = train_lb_encoder.transform(y_train)
-#
-#     np.save('X_train.npy', X_train)
-#     np.save('y_train.npy', y_train)
+def create_train_data():
+    X_train = []
+    y_train = []
+    train_paths = sorted(list(paths.list_images(train_set)))
+    for train_path in train_paths:
+        train_ft = feature_extractor(train_path)
+        X_train.append(train_ft)
+        label = train_path.split(os.path.sep)[-2]
+        y_train.append(label)
 
-#
-# def create_val_data():
-#     X_val = []
-#     y_val = []
-#     val_paths = sorted(list(paths.list_images(val_set)))
-#     for val_path in val_paths:
-#         val_ft = feature_extractor(val_path)
-#         X_val.append(val_ft)
-#         label = val_path.split(os.path.sep)[-2]
-#         y_val.append(label)
-#
-#     X_val = np.array(X_val)
-#     y_val = np.array(y_val)
-#     val_lb_encoder = LabelEncoder()
-#     val_lb_encoder = val_lb_encoder.fit(y_val)
-#     y_val = val_lb_encoder.transform(y_val)
-#     np.save('X_val.npy', X_val)
-#     np.save('y_val.npy', y_val)
+    X_train = np.array(X_train)
+    y_train = np.array(y_train)
+    train_lb_encoder = LabelEncoder()
+    train_lb_encoder = train_lb_encoder.fit(y_train)
+    y_train = train_lb_encoder.transform(y_train)
+
+    np.save('X_train.npy', X_train)
+    np.save('y_train.npy', y_train)
 
 
 def create_test_data():
@@ -107,9 +85,5 @@ def create_test_data():
 
 
 if __name__ == '__main__':
-    # create_train_data()
-    # create_val_data()
-    X_test, y_test = create_test_data()
-    cm = confusion_matrix(y_test, X_test)
-    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-    print(cm.diagonal())
+    create_train_data()
+    create_test_data()
