@@ -17,13 +17,12 @@ y_train = np.load('y_train.npy')
 X_val = np.load('X_val.npy')
 y_val = np.load('y_val.npy')
 
-sm = SMOTE(random_state=12, ratio = 1.0)
+sm = SMOTE(random_state=12, ratio=1.0)
 X_train_res, y_train_res = sm.fit_sample(X_train, y_train)
-
 
 print('Training and making predictions')
 clf = xgb.XGBClassifier(max_depth=15, learning_rate=0.1, n_estimators=100)
-clf.fit(X_train, y_train)
+clf.fit(X_train_res, y_train_res)
 
 predictions = clf.predict(X_val)
 accuracy = accuracy_score(y_val, predictions)
