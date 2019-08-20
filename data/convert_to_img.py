@@ -1,11 +1,17 @@
-import os
-import cv2
+import matplotlib
 import numpy as np
-from matplotlib import pyplot as plt
+from imutils import paths
+from matplotlib import image
 
-dataset = ""
-des_dir = ""
-for path in dataset:
-    arr = np.load("")
-    img = plt.imshow(cv2.cvtColor(arr, cv2.COLOR_BGR2GRAY))
-    plt.savefig(os.path.join(des_dir, img))
+dataset = "../preprocess/"
+des_dir = "../new_dataset/train/"
+
+img_paths = sorted(list(paths.list_images(dataset)))
+for img_path in img_paths:
+    diagnosis = img_path.split("/")[-2]
+    img_name = img_path.split("/")[-1]
+    img_name = img_name.split(".")[-2]
+    img_name = img_name.split
+    arr = np.load(img_path)
+    img_name = img_name + ".jpg"
+    matplotlib.image.imsave(des_dir + diagnosis + img_name, arr)
