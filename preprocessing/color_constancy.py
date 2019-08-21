@@ -6,8 +6,8 @@ from matplotlib import image
 # path
 train_dataset = "../dataset/train_images/"
 val_dataset = "../dataset/val_images/"
-new_train = "../preprocess/train_images/"
-new_val = "../preprocess/val_images/"
+new_train = "../preprocessing/train_images/"
+new_val = "../preprocessing/val_images/"
 
 
 def color_constancy(img, power=6, gamma=None):
@@ -48,9 +48,10 @@ def preprocess(dataset, des_dir):
             new_path = des_dir + path.split("/")[-2] + "/"
             im = cv2.imread(path)
             im_arr = color_constancy(im)
+            rgb_im = cv2.cvtColor(im_arr, cv2.COLOR_BGR2RGB)
             if not os.path.exists(new_path):
                 os.makedirs(new_path)
-            image.imsave(new_path + file, im_arr)
+            image.imsave(new_path + file, rgb_im)
 
 
 if __name__ == '__main__':
