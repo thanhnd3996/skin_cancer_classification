@@ -6,8 +6,8 @@ from matplotlib import image
 # path
 train_dataset = "../dataset/train_images/"
 val_dataset = "../dataset/val_images/"
-new_train = "../preprocessing/train_images/"
-new_val = "../preprocessing/val_images/"
+new_train = "../preprocess/train_images/"
+new_val = "../preprocess/val_images/"
 
 
 def color_constancy(img, power=6, gamma=None):

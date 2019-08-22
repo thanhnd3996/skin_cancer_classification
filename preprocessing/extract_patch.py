@@ -1,3 +1,4 @@
+import os
 import cv2
 from imutils import paths
 from sklearn.feature_extraction import image as patch_ex
@@ -14,6 +15,7 @@ new_val = "../new_dataset/val_images/"
 def extract_path(dataset, new_dataset, num_per_patch=None):
     img_paths = sorted(list(paths.list_images(dataset)))
     for img_path in img_paths:
+
         diag = img_path.split("/")[-2]
         if diag == 'AKIEC':
             num_per_patch = 20
@@ -31,6 +33,7 @@ def extract_path(dataset, new_dataset, num_per_patch=None):
             num_per_patch = 50
         img_name = img_path.split("/")[-1]
         img_name = img_name.split(".")[-2]
+        new_path = new_dataset + diag + "/"
 
         img = cv2.imread(img_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -41,7 +44,9 @@ def extract_path(dataset, new_dataset, num_per_patch=None):
         for patch in patches:
             i += 1
             rgb_im = cv2.cvtColor(patch, cv2.COLOR_BGR2RGB)
-            image.imsave(new_dataset + diag + "/" + img_name + "_" + str(i) + ".jpg", rgb_im)
+            if not os.path.exists(new_path):
+                os.makedirs(new_path)
+            image.imsave(new_path + img_name + "_" + str(i) + ".jpg", rgb_im)
 
 
 if __name__ == '__main__':
