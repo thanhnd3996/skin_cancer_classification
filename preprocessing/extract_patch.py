@@ -43,10 +43,9 @@ def extract_path(dataset, new_dataset, num_per_patch=None):
 
         for patch in patches:
             i += 1
-            rgb_im = cv2.cvtColor(patch, cv2.COLOR_BGR2RGB)
             if not os.path.exists(new_path):
                 os.makedirs(new_path)
-            image.imsave(new_path + img_name + "_" + str(i) + ".jpg", rgb_im)
+            image.imsave(new_path + img_name + "_" + str(i) + ".jpg", patch)
 
 
 if __name__ == '__main__':
